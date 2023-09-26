@@ -48,8 +48,8 @@ const studentSchema = new mongoose.Schema({
     },
     subject: [
         {
-            type: String,
-            trim: true,
+            type: mongoose.Types.ObjectId,
+            ref: 'Subject',
         },
     ],
 });

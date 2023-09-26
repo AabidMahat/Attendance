@@ -46,8 +46,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
 });
 
 exports.sighUp = catchAsync(async (req, res, next) => {
-    const { name, email, password, confirmPassword, passwordChangeAt } =
-        req.body;
+    const { name, email, password, confirmPassword } = req.body;
 
     // 1) Check whether user exist or not with given email
 

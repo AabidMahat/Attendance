@@ -1,7 +1,9 @@
+const mongoose = require('mongoose');
 const Subject = require('../model/subjectModel');
+const Student = require('../model/studentModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
-const mongoose = require('mongoose');
+const apiFeatures = require('../utils/ApiMethods');
 
 exports.createNewSubject = async (req, res, next) => {
     try {
@@ -23,6 +25,10 @@ exports.createNewSubject = async (req, res, next) => {
             );
         }
 
+        await Student.findByIdAndUpdate(userId, {
+            $push: { subjects: newSubject._id },
+        });
+
         res.status(201).json({
             status: 'success',
             data: {
@@ -36,11 +42,13 @@ exports.createNewSubject = async (req, res, next) => {
         });
     }
 };
+
 exports.markAttendance = async (req, res, next) => {
     try {
         const { holiday, date, isPresent } = req.body;
         const userId = req.student._id; // Assuming user is authenticated and available in req
         const subjectId = req.params.subjectId;
+
         // Find the subject based on subjectId and the user
         const subject = await Subject.findOne({
             _id: subjectId,
@@ -48,13 +56,16 @@ exports.markAttendance = async (req, res, next) => {
         });
 
         if (!subject) {
-            return next(new AppError('Subject not found 😕😕', 202));
+            return res.status(404).json({
+                status: 'error',
+                message: 'Subject not found 😕',
+            });
         }
 
         // Check if there's an existing attendance record
         let existingRecord = subject.attendanceRecords.find(
             (record) => record.date === date
-        ); // Assuming only one attendance record per subject
+        );
 
         if (existingRecord) {
             existingRecord.isPresent = isPresent;
@@ -66,7 +77,8 @@ exports.markAttendance = async (req, res, next) => {
                 holiday,
             });
         }
-        //Save the document
+
+        // Save the document
         await subject.save();
 
         res.status(200).json({
@@ -83,28 +95,61 @@ exports.markAttendance = async (req, res, next) => {
     }
 };
 
-exports.getUserSubjectsAndAttendance = async (req, res, next) => {
-    try {
-        const userId = req.student._id; // Assuming user is authenticated and available in req
+exports.getUserSubjectsAndAttendance = catchAsync(async (req, res, next) => {
+    const userId = req.student._id;
+    const subjects = await Subject.find({ user: userId });
 
-        // Retrieve the user's subjects and attendance records for the last 10 days
-        const subjectsWithAttendance = await Subject.find({ user: userId })
-            .populate('attendanceRecords')
-            .exec();
+    await Subject.populate(subjects, {
+        path: 'attendanceRecords',
+    });
 
+    if (!subjects) {
+        return next(new AppError('This user has no subject 😑😑', 404));
+    }
+
+    const targetDate = req.query.date ? new Date(req.query.date) : null; //Convert the date into Date object
+
+    if (targetDate) {
+        const attendance = subjects
+            .map((subject) => {
+                //filter the attendance record for that particular date
+                const attendanceForDate = subject.attendanceRecords.filter(
+                    (records) =>
+                        records.date.toDateString() ===
+                        targetDate.toDateString()
+                );
+                if (attendanceForDate.length > 0) {
+                    return {
+                        _id: subject._id,
+                        subject: subject.subject,
+                        user: subject.user,
+                        attendanceRecords: attendanceForDate,
+                    };
+                }
+                return null;
+            })
+            .filter(Boolean);
+
+        if (!attendance) {
+            return next(new AppError('No attendance on that date 😅😅', 404));
+        }
         res.status(200).json({
-            status: 'success',
+            status: 'Success',
+            result: attendance.length,
             data: {
-                subjectsWithAttendance,
+                attendance,
             },
         });
-    } catch (err) {
-        res.status(500).json({
-            status: 'error',
-            message: err.message,
+    } else {
+        res.status(200).json({
+            status: 'Success',
+            result: subjects.length,
+            data: {
+                subjects,
+            },
         });
     }
-};
+});
 
 //Implementing aggregate middleware
 exports.calcAttendance = catchAsync(async (req, res, next) => {
@@ -179,6 +224,26 @@ exports.calcAttendance = catchAsync(async (req, res, next) => {
         status: 'success',
         data: {
             attendance: attendance[0], // Assuming there's only one subject/user combination
+        },
+    });
+});
+
+exports.getAllStudent = catchAsync(async (req, res, next) => {
+    const queryObj = { ...req.query };
+
+    const excludeData = ['page', 'sort', 'field', 'limit'];
+
+    excludeData.forEach((el) => delete queryObj[el]);
+
+    const student = await Student.find(queryObj);
+
+    if (!student) return next(new AppError('Student Data not found 😥😥', 402));
+
+    res.status(200).json({
+        status: 'Success',
+        result: student.length,
+        data: {
+            student,
         },
     });
 });

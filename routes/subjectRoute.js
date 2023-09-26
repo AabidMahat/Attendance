@@ -1,7 +1,10 @@
 const express = require('express');
 const subjectController = require('../controller/subjectController');
 const authController = require('../controller/authController');
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
+
+router.route('/getAllData').get(subjectController.getAllStudent);
+
 router.use(authController.protect);
 router.route('/addSubject').post(subjectController.createNewSubject);
 router
@@ -12,4 +15,5 @@ router.get('/dashboard', subjectController.getUserSubjectsAndAttendance);
 router
     .route('/calcAttendance/:subjectId')
     .get(authController.protect, subjectController.calcAttendance);
+
 module.exports = router;
