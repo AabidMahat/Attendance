@@ -1,5 +1,5 @@
 const { promisify } = require('util');
-
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const studentModel = require('../model/studentModel');
 const catchAsync = require('./../utils/catchAsync');
@@ -8,6 +8,7 @@ const errorController = require('./errorController');
 const { decode } = require('punycode');
 
 const Email = require('../utils/email');
+const Student = require('../model/studentModel');
 const signToken = (id) => {
     return jwt.sign({ id: id }, process.env.JWT_SECERT, {
         expiresIn: process.env.JWT_EXPIRES_IN,
@@ -158,4 +159,85 @@ exports.protect = catchAsync(async (req, res, next) => {
     //putting all data to req
     req.student = freshStudent;
     next();
+});
+
+exports.forgetPassword = catchAsync(async (req, res, next) => {
+    //1) Find user with email
+    const student = await Student.findOne({ email: req.body.email });
+
+    if (!student)
+        return next(
+            new AppError(
+                'No User with this mail !! Please check your mail🤯🤯',
+                404
+            )
+        );
+
+    //2) Generate random reset token
+
+    const resetToken = student.createPasswordResetToken();
+
+    try {
+        const url = `http://127.0.0.1:3000/api/v2/student/resetPassword/${resetToken}`;
+
+        await new Email(student.email, url).resetPassword();
+
+        res.status(200).json({
+            status: 'Success',
+            message: 'Mail send the your inbox',
+        });
+    } catch (err) {
+        return next(
+            new AppError(
+                'Cannot send mail right, now due to some internal error!!😥😥',
+                500
+            )
+        );
+    }
+
+    await student.save({ validateBeforeSave: false });
+});
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+    //1) Get user from token
+
+    const hashToken = crypto
+        .createHash('sha256')
+        .update(req.params.token)
+        .digest('hex');
+
+    const student = await Student.findOne({
+        passwordResetToken: hashToken,
+        passwordResetExpires: {
+            $gt: Date.now(),
+        },
+    });
+
+    //2) If token is not expired or if there student exist set the new password
+
+    if (!student) {
+        return next(new AppError('Token is invalid or has expired😡😡😡', 400));
+    }
+
+    //3) Update the password
+
+    student.password = req.body.password;
+    student.confirmPassword = req.body.confirmPassword;
+
+    student.passwordResetToken = undefined;
+    student.passwordResetExpires = undefined;
+
+    await student.save();
+
+    const token = signToken(student._id);
+
+    //4) Login the user
+
+    res.status(200).json({
+        status: 'Success',
+        token,
+        data: {
+            student,
+        },
+    });
 });

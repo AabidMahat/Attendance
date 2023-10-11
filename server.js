@@ -20,7 +20,8 @@ mongoose
     })
     .then(() => {
         console.log('DataBase is connected successfully💥💥');
-    });
+    })
+    .catch();
 
 //connecting the port
 const port = process.env.PORT || 4000;

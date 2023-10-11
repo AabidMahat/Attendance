@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
@@ -52,6 +54,12 @@ const studentSchema = new mongoose.Schema({
             ref: 'Subject',
         },
     ],
+    passwordResetToken: {
+        type: String,
+    },
+    passwordResetExpires: {
+        type: Date,
+    },
 });
 
 //Encryption of password
@@ -76,6 +84,7 @@ studentSchema.pre('save', async function (next) {
 
     next();
 });
+
 //This is the instance method so it is applicable to all documents in this Schema
 studentSchema.methods.correctPassword = async function (
     newPassword,
@@ -94,6 +103,22 @@ studentSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {
         return JWTTimeStamp < changedTimeStamp;
     }
     return false;
+};
+
+studentSchema.methods.createPasswordResetToken = function () {
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    //encrypting token
+    this.passwordResetToken = crypto
+        .createHash('sha256')
+        .update(resetToken)
+        .digest('hex');
+
+    console.log({ resetToken }, this.passwordResetToken);
+    //Expires timer
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+    return resetToken;
 };
 
 const Student = mongoose.model('Student', studentSchema);
