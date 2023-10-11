@@ -26,7 +26,7 @@ exports.createNewSubject = async (req, res, next) => {
         }
 
         await Student.findByIdAndUpdate(userId, {
-            $push: { subjects: newSubject._id },
+            $push: { subject: newSubject._id },
         });
 
         res.status(201).json({
@@ -92,6 +92,7 @@ exports.markAttendance = async (req, res, next) => {
             status: 'error',
             message: err.message,
         });
+        console.log(err);
     }
 };
 
@@ -133,6 +134,9 @@ exports.getUserSubjectsAndAttendance = catchAsync(async (req, res, next) => {
         if (!attendance) {
             return next(new AppError('No attendance on that date 😅😅', 404));
         }
+
+        //Getting subject id
+
         res.status(200).json({
             status: 'Success',
             result: attendance.length,
@@ -245,5 +249,98 @@ exports.getAllStudent = catchAsync(async (req, res, next) => {
         data: {
             student,
         },
+    });
+});
+
+exports.updateSubjectDetails = catchAsync(async (req, res, next) => {
+    //1) Check if user is log
+    const studentId = req.student.id;
+    const subjectId = req.params.subjectId;
+    const dateToModify = new Date(req.params.date);
+
+    if (!studentId)
+        return next(
+            new AppError('Student is not logged In please Login 😒😒', 404)
+        );
+    //2) update the data
+    const { subject, totalNumLecture, isPresent, holiday } = req.body;
+
+    const findSubject = await Subject.findOne({ _id: subjectId });
+
+    if (!findSubject)
+        return next(
+            new AppError('Student is not enrolled for this subject 😭😭', 404)
+        );
+
+    // Find the record in attendanceRecords with a matching date
+    const recordToUpdate = findSubject.attendanceRecords.find((record) => {
+        return record.date.toDateString() === dateToModify.toDateString();
+    });
+
+    if (recordToUpdate) {
+        recordToUpdate.subject = subject;
+        recordToUpdate.holiday = holiday;
+        recordToUpdate.isPresent = isPresent;
+        recordToUpdate.totalNumLecture = totalNumLecture;
+    }
+    console.log(recordToUpdate);
+
+    await findSubject.save();
+    //3) send the response
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Data updated successfully 😎😎',
+        data: {
+            findSubject,
+        },
+    });
+});
+
+exports.deleteSubject = catchAsync(async (req, res, next) => {
+    // Check whether student login or not
+    const studentId = req.student._id;
+    const subjectId = req.params.subjectId;
+
+    const subjects = await Subject.findByIdAndDelete(subjectId);
+
+    if (!subjects) {
+        return next(new AppError("There's no subject present😅😅", 400));
+    }
+
+    // Use $pull operator to remove the subjectId from the student's subjects array
+    await Student.findByIdAndUpdate(studentId, {
+        $pull: { subject: subjectId },
+    });
+
+    res.status(200).json({
+        status: 'Success',
+        message: 'Data deleted Successfully 😭😭',
+    });
+});
+
+exports.deleteAttendance = catchAsync(async (req, res, next) => {
+    // Check whether student login or not
+    const subjectId = req.params.subjectId;
+
+    const subject = await Subject.findOne({ _id: subjectId });
+
+    //2) FInd the specific date and delete the attendance
+
+    if (!subject) {
+        return next(new AppError('Subject not found😕😕', 404));
+    }
+
+    const date = new Date(req.params.attendanceDate);
+
+    subject.attendanceRecords = subject.attendanceRecords.filter(
+        (record) => record.date.toDateString() !== date.toDateString()
+    );
+
+    await subject.save();
+
+    res.status(200).json({
+        status: 'Success',
+        message: 'Attendance deleted Successfully 😭😭',
     });
 });

@@ -3,6 +3,7 @@ const express = require('express');
 
 const subjectRoute = require('./routes/subjectRoute');
 const studentRoute = require('./routes/studentRoute');
+const views = require('./routes/viewsRoute');
 
 const AppError = require('./utils/appError');
 const globalErrorHandling = require('./controller/errorController');
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 app.use(express.static(`${__dirname}/public`));
 
 //creating the routes
+app.use('/', views);
 app.use('/api/v2/subject', subjectRoute);
 app.use('/api/v2/student', studentRoute);
 

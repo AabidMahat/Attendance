@@ -50,4 +50,10 @@ module.exports = class Email {
     async signUpUser() {
         await this.send('signUp', 'Your Verification mail (Valid for 10mins)');
     }
+    async resetPassword() {
+        await this.send(
+            'resetPassword',
+            'Your Reset Password mail (Valid for 10mins)'
+        );
+    }
 };

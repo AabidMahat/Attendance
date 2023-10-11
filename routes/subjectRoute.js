@@ -16,4 +16,17 @@ router
     .route('/calcAttendance/:subjectId')
     .get(authController.protect, subjectController.calcAttendance);
 
+//Updating
+router
+    .route('/updateSubjectData/:subjectId/:date')
+    .patch(authController.protect, subjectController.updateSubjectDetails);
+
+router
+    .route('/deleteSubject/:subjectId')
+    .delete(authController.protect, subjectController.deleteSubject);
+
+router
+    .route('/deleteAttendance/:subjectId/:attendanceDate')
+    .delete(authController.protect, subjectController.deleteAttendance);
+
 module.exports = router;

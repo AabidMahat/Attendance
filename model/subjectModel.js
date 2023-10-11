@@ -63,40 +63,22 @@ const userDataSchema = new mongoose.Schema(
 //     await student.save();
 //     next();
 // });
-
-//calculating attendance percent
-const calcAttendanceRecord = (attendanceRecords) => {
-    if (!attendanceRecords || attendanceRecords.length === 0) {
-        return 0;
-    }
-    const totalLectures = attendanceRecords.length;
-    const presentLectures = attendanceRecords.filter(
-        (records) => records.isPresent
+userDataSchema.pre('save', function (next) {
+    const totalRecords = this.attendanceRecords.length;
+    const presentRecords = this.attendanceRecords.filter(
+        (record) => record.isPresent
     ).length;
 
-    const percentage = (presentLectures / totalLectures) * 100;
-
-    return parseFloat(percentage.toFixed(2));
-};
-
-//writing the post middleware cuz we need to update once data is stored in database
-userDataSchema.post('save', async function () {
-    const studentId = this.user;
-
-    const attendanceRecords = this.attendanceRecords;
-    console.log(attendanceRecords);
-
-    const attendancePercent = calcAttendanceRecord(attendanceRecords);
-    console.log(attendancePercent);
-    //Update the attendance percent
-    try {
-        await Subject.updateOne(
-            { user: studentId },
-            { $set: { attendancePercent } }
-        );
-    } catch (error) {
-        console.error('Error updating attendance percentage:', error);
+    // Calculate attendance percentage
+    if (totalRecords > 0) {
+        this.attendancePercent = parseFloat(
+            (presentRecords / totalRecords) * 100
+        ).toFixed(2);
+    } else {
+        this.attendancePercent = 0; // Set attendancePercent to 0 if there are no records
     }
+
+    next();
 });
 
 //modelling the subject
