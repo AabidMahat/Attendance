@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 
 const subjectRoute = require('./routes/subjectRoute');
 const studentRoute = require('./routes/studentRoute');
@@ -13,6 +14,11 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//Body parser , reading data from body into req.body
+app.use(cookieParser());
+// Data Sanitization against No SQL query injection
+// app.use(mongoSanitize());
+
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -20,6 +26,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.use((req, res, next) => {
     console.log('Hello from the middleware🙌🙌');
     // console.log(req.headers);
+    next();
+});
+
+app.use((req, res, next) => {
+    req.requestTime = new Date().toISOString();
+    // console.log(req.cookies);
     next();
 });
 

@@ -1,0 +1,63 @@
+extends base
+
+block append head
+  script(defer src='/js/bundle.js')
+
+block content
+  main.main
+    .card-container
+      each subject in subjects
+        .card
+          .card__header
+            .card__picture
+              .card__picture-overlay &nbsp;
+              img.card__picture-img(src=`/img/subjects/${subject.Image}`, alt=subject.subject)
+            h3.heading-tertirary
+              span= subject.subject
+
+          .card__details
+            h2.card__sub-heading= Details
+            p.card__text= `Total Lectures: ${subject.totalNumLecture}`
+            .card__data
+              img.card__icon(src='/img/immigration.png')
+              span= `Attendance : ${subject.attendancePercent}%`
+
+            - let Presentcount = 0;
+            - let Absentcount = 0;
+            - let holidayCount = 0;
+
+            each record in subject.attendanceRecords
+              if record.isPresent
+                - Presentcount++;
+              else
+                - Absentcount++;
+
+              if record.holiday
+                - holidayCount++;
+
+            .card__data
+              img.card__icon(src='/img/swipe-up.gif')
+              span= `Present: ${Presentcount} Lec`
+
+            .card__data
+              img.card__icon(src='/img/absent.png')
+              span= `Absent: ${Absentcount} Lec`
+
+            .card__data
+              img.card__icon(src='/img/sun-lounger.gif')
+              span= `Holiday: ${holidayCount} hurray`
+
+          - Presentcount = 0;
+          - Absentcount = 0;
+          - holidayCount = 0;
+
+            //- .card__footer
+            //- p
+            //-   span.card__footer-value= `$${tour.price}`
+            //-   |
+            //-   span.card__footer-text per person
+            //- p.card__ratings
+            //-   span.card__footer-value= tour.ratingsAverage
+            //-   |
+            //-   span.card__footer-text= `rating (${tour.ratingsQuantity})`
+            //- a.btn.btn--green.btn--small(href=`/tours/${tour.slugify}`) Details

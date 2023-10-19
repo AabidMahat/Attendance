@@ -96,6 +96,7 @@ exports.markAttendance = async (req, res, next) => {
     }
 };
 
+//Dashboard
 exports.getUserSubjectsAndAttendance = catchAsync(async (req, res, next) => {
     const userId = req.student._id;
     const subjects = await Subject.find({ user: userId });

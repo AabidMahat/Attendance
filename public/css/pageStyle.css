@@ -1071,7 +1071,7 @@ body {
 }
 
 .card-container {
-    max-width: 120rem;
+    max-width: 140rem;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1130,7 +1130,7 @@ body {
     grid-template-columns: 1fr 1fr;
     grid-row-gap: 1.75rem;
     grid-column-gap: 2rem;
-    padding: 2.5rem 3rem;
+    padding: 2.5rem 1.5rem;
 }
 .card__sub-heading {
     font-size: 1.2rem;
@@ -1140,7 +1140,7 @@ body {
 }
 .card__text {
     grid-column: 1 / -1;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-style: italic;
     margin-top: -1rem;
     margin-bottom: 0.75rem;
@@ -1322,4 +1322,12 @@ body {
     box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
     -webkit-transform: translateY(-2px);
     transform: translateY(-2px);
+}
+.card__data > span {
+    margin-left: 10px;
+    font-size: 1.4rem;
+}
+.card__data > img {
+    width: 3rem;
+    height: 3rem;
 }

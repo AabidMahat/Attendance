@@ -9,6 +9,10 @@ const userDataSchema = new mongoose.Schema(
             type: String,
             required: [true, 'User must enter subject name'],
             trim: true,
+            unique: true,
+        },
+        Image: {
+            type: String,
         },
         totalNumLecture: {
             type: Number,

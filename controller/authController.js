@@ -8,13 +8,41 @@ const errorController = require('./errorController');
 const { decode } = require('punycode');
 
 const Email = require('../utils/email');
-const Student = require('../model/studentModel');
 const signToken = (id) => {
     return jwt.sign({ id: id }, process.env.JWT_SECERT, {
         expiresIn: process.env.JWT_EXPIRES_IN,
     });
 };
+const createSendToken = (user, statusCode, res) => {
+    const token = signToken(user._id);
 
+    //Creating cookies with jwt token
+    const cookieOption = {
+        expires: new Date(
+            Date.now() +
+                process.env.JWT_COOKIE_EXPIRES_IN * (24 * 60 * 60 * 1000)
+        ),
+        httpOnly: true,
+    };
+
+    if (process.env.NODE_ENV === 'production') {
+        cookieOption.secure = true;
+    }
+    res.cookie('jwt', token, cookieOption);
+
+    //Remove the password from client
+    user.password = undefined;
+
+    // console.log(user);
+    res.status(statusCode).json({
+        status: statusCode,
+        message: 'User logged In',
+        token,
+        data: {
+            user,
+        },
+    });
+};
 exports.logIn = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -33,17 +61,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
         return next(new AppError('Incorrect Email or Password 🤨🤨', 401));
     }
     // send the jwt token to client
-    const token = signToken(student._id);
-
-    //Sending the response
-
-    res.status(200).json({
-        status: 'Success',
-        token,
-        data: {
-            student,
-        },
-    });
+    createSendToken(student, 200, res);
 });
 
 exports.sighUp = catchAsync(async (req, res, next) => {
@@ -130,6 +148,8 @@ exports.protect = catchAsync(async (req, res, next) => {
         req.headers.authorization.startsWith('Bearer')
     ) {
         token = req.headers.authorization.split(' ')[1];
+    } else if (req.cookies.jwt) {
+        token = req.cookies.jwt;
     }
     if (!token) {
         return next(new AppError('You are not logged In 😡😡', 401));
@@ -158,12 +178,50 @@ exports.protect = catchAsync(async (req, res, next) => {
 
     //putting all data to req
     req.student = freshStudent;
+    res.locals.student = freshStudent;
     next();
 });
 
+//Use isLogin function in frontend
+exports.isLogin = async (req, res, next) => {
+    let token;
+
+    if (req.cookies.jwt) {
+        token = req.cookies.jwt;
+    }
+    if (!token) {
+        return next(new AppError('Ur not logged In 😡😡😡', 401));
+    }
+
+    //Creating a decoded Id
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECERT);
+
+    console.log(decoded);
+
+    const currentStudent = await studentModel.findById(decoded.id);
+
+    if (!currentStudent) {
+        return next(new AppError('User no longer exists 😥😥', 401));
+    }
+
+    if (currentStudent.changedPasswordAfter(decoded.iat)) {
+        return next(
+            new AppError(
+                'U have changed the password !! Please logIn again 😄😄',
+                401
+            )
+        );
+    }
+
+    req.student = currentStudent;
+    res.locals.student = currentStudent;
+    next();
+};
+// Check if the token exists in cookies
+
 exports.forgetPassword = catchAsync(async (req, res, next) => {
     //1) Find user with email
-    const student = await Student.findOne({ email: req.body.email });
+    const student = await studentModel.findOne({ email: req.body.email });
 
     if (!student)
         return next(
@@ -206,7 +264,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
         .update(req.params.token)
         .digest('hex');
 
-    const student = await Student.findOne({
+    const student = await studentModel.findOne({
         passwordResetToken: hashToken,
         passwordResetExpires: {
             $gt: Date.now(),
@@ -227,17 +285,8 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     student.passwordResetToken = undefined;
     student.passwordResetExpires = undefined;
 
-    await student.save();
+    await student.save({ validateBeforeSave: true });
 
-    const token = signToken(student._id);
-
-    //4) Login the user
-
-    res.status(200).json({
-        status: 'Success',
-        token,
-        data: {
-            student,
-        },
-    });
+    // const token = signToken(student._id);
+    createSendToken(student, 200, res);
 });

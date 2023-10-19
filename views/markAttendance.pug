@@ -1,0 +1,59 @@
+doctype html
+html(lang="en")
+  head
+    title Add Subject
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    script( defer src='/js/bundle.js')
+    link(rel="icon", type="image/png", href="/addSubject/images/icons/favicon.ico")
+    link(rel="stylesheet", type="text/css", href="/addSubject/vendor/bootstrap/css/bootstrap.min.css")
+    link(rel="stylesheet", type="text/css", href="/addSubject/fonts/font-awesome-4.7.0/css/font-awesome.min.css")
+    link(rel="stylesheet", type="text/css", href="/addSubject/vendor/animate/animate.css")
+    link(rel="stylesheet", type="text/css", href="/addSubject/vendor/css-hamburgers/hamburgers.min.css")
+    link(rel="stylesheet", type="text/css", href="/addSubject/vendor/select2/select2.min.css")
+    link(rel="stylesheet", type="text/css", href="/addSubject/css/util.css")
+    link(rel="stylesheet", type="text/css", href="/addSubject/css/main.css")
+    link(rel="stylesheet", href="/css/pageStyle.css")
+  body
+    .limiter
+      .container-login100
+        .wrap-login100
+          .login100-pic.js-tilt(data-tilt="")
+            img(src="/images/signin-image.jpg", alt="IMG")
+          form#markAttendance_form.login100-form.validate-form
+            span.login100-form-title Mark Attendance
+            .wrap-input100.validate-input(data-validate="Enter whether there is holiday or not")
+              input#name.input100(type="text", name="holiday", placeholder="Holiday?")
+              span.focus-input100
+              span.symbol-input100
+                i.fa.fa-envelope(aria-hidden="true")
+            .wrap-input100.validate-input(data-validate="Date is required")
+              input#email.input100(type="date", name="date", placeholder="Enter Date")
+              span.focus-input100
+              span.symbol-input100
+                i.fa.fa-lock(aria-hidden="true")
+            .wrap-input100.validate-input(data-validate="Attendance is Required")
+              input#email.input100(type="text", name="isPresent", placeholder="Attended the lecture?")
+              span.focus-input100
+              span.symbol-input100
+                i.fa.fa-lock(aria-hidden="true")
+            .container-login100-form-btn
+              button.login100-form-btn Mark Attendance
+            .text-center.p-t-12
+              span.txt1 Already
+              a.txt2(href="#")  Marked Attendance / Go Back?
+            .text-center.p-t-136
+              a.txt2(href="/subjectsOverview") Subject Overview
+                i.fa.fa-long-arrow-right.m-l-5(aria-hidden="true")
+
+
+
+  script(src="/addSubject/vendor/jquery/jquery-3.2.1.min.js")
+  //- script(src="addSubject/vendor/bootstrap/js/popper.js")
+  //- script(src="addSubject/vendor/bootstrap/js/bootstrap.min.js")
+  script(src="/addSubject/vendor/select2/select2.min.js")
+  script(src="/addSubject/vendor/tilt/tilt.jquery.min.js").
+    | $('.js-tilt').tilt({
+    |   scale: 1.1
+    | })
+  script(src="/addSubject/js/main.js")
