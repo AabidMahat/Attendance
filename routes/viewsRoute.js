@@ -16,4 +16,5 @@ router.route('/add').get(authController.isLogin, viewsController.addSubject);
 router
     .route('/markAttendance/:subjectId')
     .get(authController.isLogin, viewsController.markAttendance);
+
 module.exports = router;

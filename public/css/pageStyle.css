@@ -1072,6 +1072,7 @@ body {
 
 .card-container {
     max-width: 140rem;
+    max-width: 120rem;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1131,6 +1132,7 @@ body {
     grid-row-gap: 1.75rem;
     grid-column-gap: 2rem;
     padding: 2.5rem 1.5rem;
+    padding: 2.5rem 3rem;
 }
 .card__sub-heading {
     font-size: 1.2rem;
@@ -1141,6 +1143,7 @@ body {
 .card__text {
     grid-column: 1 / -1;
     font-size: 1.8rem;
+    font-size: 1.5rem;
     font-style: italic;
     margin-top: -1rem;
     margin-bottom: 0.75rem;

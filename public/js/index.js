@@ -1,6 +1,7 @@
 import '@babel/polyfill';
 
 import { signUp } from './signUp';
+
 import { logIn } from './logIn';
 import { addData } from './addSubjects';
 
