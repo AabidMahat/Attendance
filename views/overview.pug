@@ -5,6 +5,8 @@ block append head
 
 block content
   main.main
+    button.btn.btn--green
+      a(href=`http://127.0.0.1:5000/?studentId=${subjects[0].user}`) Predict
     .card-container
       each subject in subjects
         .card
@@ -46,6 +48,13 @@ block content
             .card__data
               img.card__icon(src='/img/sun-lounger.gif')
               span= `Holiday: ${holidayCount} hurray`
+
+            .card__data
+              button.btn.btn--green 
+                a.btn--green(href=`/markAttendance/${subject._id}`) Mark
+            
+            .card__data   
+              button.btn.btn--green Update
 
           - Presentcount = 0;
           - Absentcount = 0;

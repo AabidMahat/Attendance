@@ -1071,16 +1071,17 @@ body {
 }
 
 .card-container {
-    max-width: 140rem;
+    max-width: 160rem;
     max-width: 120rem;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 7rem;
+    grid-gap: 5rem;
 }
 
 .card {
     border-radius: 3px;
+    width: 380px;
     overflow: hidden;
     -webkit-box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.1);
     box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.1);
@@ -1150,6 +1151,7 @@ body {
 }
 .card__data {
     font-size: 1.3rem;
+    width: 165px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -1333,4 +1335,7 @@ body {
 .card__data > img {
     width: 3rem;
     height: 3rem;
+}
+.card__data > button > a {
+    text-decoration: none;
 }
