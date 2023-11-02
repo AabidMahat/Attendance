@@ -4,9 +4,9 @@ block append head
   script(defer src='/js/bundle.js')
 
 block content
+  button.btn.btn--green.flask
+    a.btn--green(href=`http://127.0.0.1:5000/?studentId=${subjects[0].user}`) Predict
   main.main
-    button.btn.btn--green
-      a(href=`http://127.0.0.1:5000/?studentId=${subjects[0].user}`) Predict
     .card-container
       each subject in subjects
         .card
@@ -15,7 +15,8 @@ block content
               .card__picture-overlay &nbsp;
               img.card__picture-img(src=`/img/subjects/${subject.Image}`, alt=subject.subject)
             h3.heading-tertirary
-              span= subject.subject
+              a(href=`/getAttendanceWithDates/${subject._id}`).btn--green
+                span= subject.subject
 
           .card__details
             h2.card__sub-heading= Details

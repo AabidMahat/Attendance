@@ -40,6 +40,10 @@ const studentSchema = new mongoose.Schema({
             message: 'Password are not same !! Check the password😉',
         },
     },
+    photo: {
+        type: String,
+        default: 'default.jpeg',
+    },
     passwordChangeAt: Date,
     verificationToken: {
         type: String,

@@ -17,4 +17,11 @@ router
     .route('/markAttendance/:subjectId')
     .get(authController.isLogin, viewsController.markAttendance);
 
+router
+    .route('/account')
+    .get(authController.isLogin, viewsController.getAccount);
+
+router
+    .route('/getAttendanceWithDates/:subjectId')
+    .get(authController.isLogin, viewsController.getAttendanceWithDates);
 module.exports = router;

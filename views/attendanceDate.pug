@@ -1,0 +1,75 @@
+doctype html
+html(lang='en')
+  head
+    // Required meta tags
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    link(rel='shortcut icon' type='image/png' href='/img/favicon.png')
+    link(href='https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap', rel='stylesheet')
+    link(rel='stylesheet', href='/TableOverview/fonts/icomoon/style.css')
+    link(rel='stylesheet', href='/TableOverview/css/owl.carousel.min.css')
+    // Bootstrap CSS
+    link(rel='stylesheet', href='/TableOverview/css/bootstrap.min.css')
+
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css')
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js')
+
+
+
+    // Style
+    link(rel='stylesheet' href='/css/pageStyle.css')
+
+    link(rel='stylesheet', href='/TableOverview/css/style.css')
+
+    link(rel="stylesheet", href="/css/bar.css")
+
+    title Attendance Details 
+  body
+    include _header
+
+    .container.mt-5.mb-3
+    .row
+        .col-md-12
+            .card.pt-5.px-3(style="width:100%")
+                .progress
+                    .progress-bar(role='progressbar', style=`width: ${subjects.attendancePercent}%`, aria-valuenow='50', aria-valuemin='0', aria-valuemax='100')
+                .mt-3.data
+                    span.text1.animate-charcter
+                        - const present = Math.round((subjects.attendancePercent * subjects.attendanceRecords.length)/100)
+                        =` ${present} present `
+                    span.text1.animate-charcter
+                        = `Total Lecture : ${subjects.totalNumLecture}`
+    .content
+      .container
+        .table-responsive
+          table.table.table-striped.custom-table
+            thead
+              tr
+                th(scope='col') Sr No
+                th(scope='col') Date
+                th(scope='col') Status
+                //- th(scope='col') Contact
+                //- th(scope='col') Education
+                //- th(scope='col')
+            tbody
+            each subject , index in subjectData
+              tr
+                
+                td= index + 1
+                td
+                  -const time = (subject.date);
+                  a(href='#')= time.toLocaleDateString()
+                td
+                  -let output = subject.isPresent?"Present":"Absent"
+                  =output 
+                
+              
+
+                
+
+  script(src='/TableOverview/js/jquery-3.3.1.min.js')
+  script(src='/TableOverview/js/popper.min.js')
+  script(src='/TableOverview/js/bootstrap.min.js')
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+  script(src='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css')
+  script(src='/TableOverview/js/main.js')

@@ -7,10 +7,26 @@ import { addData } from './addSubjects';
 
 import { markAttendance } from './markAttendance';
 
+import { updateStudentData } from './updateSetting';
+
 const signUpForm = document.querySelector('.form--signUp');
 const loginForm = document.querySelector('.form--login');
 const addSubjectForm = document.querySelector('#add_form');
 const markAttendanceForm = document.getElementById('markAttendance_form');
+const updateData = document.querySelector('.form-user-data');
+
+if (updateData) {
+    updateData.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const form = new FormData();
+        form.append('name', document.getElementById('name').value);
+        form.append('email', document.getElementById('email').value);
+        form.append('photo', document.getElementById('photo').files[0]);
+
+        updateStudentData(form);
+    });
+}
 
 if (loginForm) {
     loginForm.addEventListener('submit', (e) => {

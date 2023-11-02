@@ -41,3 +41,53 @@ exports.addSubject = (req, res, next) => {
 exports.markAttendance = (req, res, next) => {
     res.status(200).render('markAttendance');
 };
+
+//account details
+
+exports.getAccount = (req, res, next) => {
+    res.status(200).render('account', {
+        title: 'My Account',
+    });
+};
+
+//update profile information
+
+exports.updateStudentData = catchAsync(async (req, res, next) => {
+    const updateStudent = await Student.findByIdAndUpdate(
+        req.student.id,
+        {
+            name: req.body.name,
+            email: req.body.email,
+        },
+        {
+            new: true,
+            runValidators: true,
+        }
+    );
+
+    res.status(200).render('/account', {
+        title: 'My Profile',
+        student: updateStudent,
+    });
+});
+
+exports.getAttendanceWithDates = catchAsync(async (req, res, next) => {
+    const studentId = req.student.id;
+    const subjectId = req.params.subjectId;
+
+    const subjects = await Subject.findOne({
+        user: studentId,
+        _id: subjectId,
+    });
+
+    if (!subjects) {
+        return next(new AppError('No subject Found 😥😥', 404));
+    }
+    console.log(subjects);
+
+    res.status(200).render('attendanceDate', {
+        title: 'Attendance Data',
+        subjectData: subjects.attendanceRecords,
+        subjects,
+    });
+});

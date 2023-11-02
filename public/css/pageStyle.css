@@ -111,6 +111,7 @@ body {
 }
 
 .heading-secondary {
+    text-decoration: none;
     font-size: 2.25rem;
     text-transform: uppercase;
     font-weight: 700;
@@ -796,8 +797,8 @@ body {
 }
 
 .footer {
-    background-color: #f7f7f7;
-    padding: 6rem 4rem 3rem 4rem;
+    background-color: #444;
+    padding: 3rem 4rem 3rem 4rem;
     font-size: 1.4rem;
     display: grid;
     grid-template-columns: auto auto;
@@ -815,6 +816,8 @@ body {
 }
 .footer__logo {
     grid-row: 1 / 3;
+    width: 2rem;
+    height: 5rem;
     -ms-flex-item-align: center;
     align-self: center;
 }
@@ -824,7 +827,7 @@ body {
     }
 }
 .footer__logo img {
-    height: 3rem;
+    height: 5rem;
 }
 .footer__nav {
     list-style: none;
@@ -836,7 +839,7 @@ body {
     margin-left: 1.5rem;
 }
 .footer__nav a {
-    color: #777;
+    color: #fff;
     text-decoration: none !important;
     -webkit-transition: all 0.2s;
     transition: all 0.2s;
@@ -1337,5 +1340,18 @@ body {
     height: 3rem;
 }
 .card__data > button > a {
+    text-decoration: none;
+}
+.flask {
+    position: absolute;
+    width: max-content;
+    top: 15%;
+    z-index: 1;
+}
+/* Flask Link */
+.btn > a {
+    text-decoration: none;
+}
+a {
     text-decoration: none;
 }

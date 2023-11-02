@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-//Body parser , reading data from body into req.body
+//Body parser , reading data (cookieParser());from body into req.body
 app.use(cookieParser());
 // Data Sanitization against No SQL query injection
 // app.use(mongoSanitize());
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
     req.requestTime = new Date().toISOString();
-    console.log(req.cookies);
+    // console.log(req.cookies);
     next();
 });
 

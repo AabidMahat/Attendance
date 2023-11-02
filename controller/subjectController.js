@@ -224,6 +224,7 @@ exports.calcAttendance = catchAsync(async (req, res, next) => {
             },
         },
     ]);
+    attendance[0].presentDays = attendance[0].presentDays;
 
     res.status(200).json({
         status: 'success',
