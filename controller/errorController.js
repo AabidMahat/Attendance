@@ -43,6 +43,52 @@ const sendErrorDev = (err, req, res) => {
         msg: err.message,
     });
 };
+
+const sendErrorProd = (err, req, res) => {
+    // Operational, trusted error: send message to client
+    // 1) API
+    if (req.originalUrl.startsWith('/api')) {
+        if (err.isOperational) {
+            return res.status(err.statusCode).json({
+                status: err.status,
+                message: err.message,
+            });
+
+            // Programming or other unknown error: don't leak error details
+        } else {
+            // 1) Log error
+            console.error('ERROR 💥', err);
+
+            // 2) Send generic message
+            return res.status(500).json({
+                status: 'error',
+                message: 'Something went very wrong!',
+            });
+        }
+    }
+    // 2) Rendered Website
+
+    // B) RENDERED WEBSITE
+    // A) Operational, trusted error: send message to client
+    console.error('ERROR 💥', err);
+
+    if (err.isOperational) {
+        console.log(err);
+        return res.status(err.statusCode).render('error', {
+            title: 'Something went wrong!',
+            msg: err.message,
+        });
+    }
+    // B) Programming or other unknown error: don't leak error details
+    // 1) Log error
+    console.error('ERROR 💥', err);
+    // 2) Send generic message
+    return res.status(err.statusCode).render('error', {
+        title: 'Something went wrong!',
+        msg: 'Please try again later.',
+    });
+};
+
 module.exports = (err, req, res, next) => {
     // console.log(err.stack);
 
@@ -51,15 +97,5 @@ module.exports = (err, req, res, next) => {
 
     if (process.env.NODE_ENV === 'development') {
         sendErrorDev(err, req, res);
-    } else if (process.env.NODE_ENV === 'production') {
-        let error = { ...err };
-        if (error.statusCode === 404) error = handleCastErrorDB(error);
-        if (error.code === 11000) error = handleDuplicateFieldsDB(error);
-        if (error._message === 'Tour validation failed')
-            error = handleValidationErrorDB(error);
-        if (error.name === 'JsonWebTokenError') error = handleJWTError();
-        if (error.name === 'TokenExpiredError')
-            error = handleTokenExprieError();
-        sendErrorProd(error, req, res);
     }
 };

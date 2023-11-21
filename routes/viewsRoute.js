@@ -4,6 +4,8 @@ const viewsController = require('../controller/viewController');
 
 const router = express.Router();
 
+router.route('/').get(viewsController.basePage);
+
 router.route('/signUp').get(viewsController.signUpStudent);
 router.route('/logIn').get(viewsController.loginStudent);
 
@@ -11,7 +13,9 @@ router
     .route('/subjectsOverview')
     .get(authController.isLogin, viewsController.subjectOverview);
 
-router.route('/add').get(authController.isLogin, viewsController.addSubject);
+router
+    .route('/addSubject')
+    .get(authController.isLogin, viewsController.addSubject);
 
 router
     .route('/markAttendance/:subjectId')
@@ -23,5 +27,14 @@ router
 
 router
     .route('/getAttendanceWithDates/:subjectId')
-    .get(authController.isLogin, viewsController.getAttendanceWithDates);
+    .get(authController.isLogin, viewsController.getCalender);
+
+router
+    .route('/updateAttendance/:subjectId/:date')
+    .get(authController.isLogin, viewsController.updateSubjectData);
+
+router
+    .route('/deleteSubject/:subjectId')
+    .get(authController.isLogin, viewsController.deleteSubject);
+
 module.exports = router;

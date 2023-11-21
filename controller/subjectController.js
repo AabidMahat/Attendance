@@ -4,7 +4,6 @@ const Student = require('../model/studentModel');
 const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 const apiFeatures = require('../utils/ApiMethods');
-
 exports.createNewSubject = async (req, res, next) => {
     try {
         // console.log(req.body);
@@ -128,7 +127,7 @@ exports.getUserSubjectsAndAttendance = catchAsync(async (req, res, next) => {
                         attendanceRecords: attendanceForDate,
                     };
                 }
-                return null;
+                return next(new AppError('No Attendance found 😥😥', 404));
             })
             .filter(Boolean);
 
@@ -284,6 +283,48 @@ exports.updateSubjectDetails = catchAsync(async (req, res, next) => {
         recordToUpdate.holiday = holiday;
         recordToUpdate.isPresent = isPresent;
         recordToUpdate.totalNumLecture = totalNumLecture;
+    }
+    console.log(recordToUpdate);
+
+    await findSubject.save();
+    //3) send the response
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Data updated successfully 😎😎',
+        data: {
+            findSubject,
+        },
+    });
+});
+exports.updateAttendanceRecords = catchAsync(async (req, res, next) => {
+    //1) Check if user is log
+    const studentId = req.student.id;
+    const subjectId = req.params.subjectId;
+    const dateToModify = new Date(req.params.date);
+
+    if (!studentId)
+        return next(
+            new AppError('Student is not logged In please Login 😒😒', 404)
+        );
+    //2) update the data
+    const { isPresent, holiday } = req.body;
+
+    const findSubject = await Subject.findOne({ _id: subjectId });
+
+    if (!findSubject)
+        return next(
+            new AppError('Student is not enrolled for this subject 😭😭', 404)
+        );
+
+    // Find the record in attendanceRecords with a matching date
+    const recordToUpdate = findSubject.attendanceRecords.find((record) => {
+        return record.date.toDateString() === dateToModify.toDateString();
+    });
+
+    if (recordToUpdate) {
+        recordToUpdate.holiday = holiday;
+        recordToUpdate.isPresent = isPresent;
     }
     console.log(recordToUpdate);
 

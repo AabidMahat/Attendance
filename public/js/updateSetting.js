@@ -28,15 +28,16 @@ export const updateStudentPassword = async (
         const updateData = await axios({
             method: 'PATCH',
             url: 'http://127.0.0.1:3000/api/v2/student/updatePassword',
+
             data: {
                 currentPassword,
                 password,
                 confirmPassword,
             },
         });
-        console.log('Response:', update);
+        console.log('Response:', updateData);
 
-        if (update.data.status === 200) {
+        if (updateData.data.status === 200) {
             showAlert('success', `Password Updated Successfully`);
         }
     } catch (err) {

@@ -1,0 +1,48 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Document
+    script( defer src='/js/bundle.js')
+    link(rel="stylesheet", href="/css/delete.css")
+
+   
+  body
+    doctype html
+html(lang="en")
+
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Document
+
+  body
+    div.bg
+      h1 Attendance
+
+    div.nft
+      div.main
+        img.tokenImage(src=`/img/subjects/${subjects.Image}`, alt="NFT")
+        h2= subjects.subject
+        p.description Do you want to delete this subject
+
+        div.tokenInfo
+          div.price
+            ins ◘
+            p= `${subjects.totalNumLecture} Lectures`
+
+          div.duration
+            ins ◷
+            -const daysRemaining = (subjects.totalNumLectures)
+
+            p= `${(subjects.totalNumLecture - subjects.attendanceRecords.length)} days left`
+
+        hr
+
+        div.creator
+          div.wrapper
+            img(src="https://images.unsplash.com/photo-1620121692029-d088224ddc74?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80", alt="Creator")
+          form#deleteSubjectForm
+            button.btn Submit

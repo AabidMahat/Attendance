@@ -6,7 +6,7 @@ export const addData = async (subject, totalNumLecture) => {
     try {
         const subjects = await axios({
             method: 'POST',
-            url: '/api/v2/subject/addSubject',
+            url: 'http://127.0.0.1:3000/api/v2/subject/addSubject',
             data: {
                 subject,
                 totalNumLecture,

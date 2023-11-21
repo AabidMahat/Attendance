@@ -42,7 +42,7 @@ const studentSchema = new mongoose.Schema({
     },
     photo: {
         type: String,
-        default: 'default.jpeg',
+        default: 'default.jpg',
     },
     passwordChangeAt: Date,
     verificationToken: {

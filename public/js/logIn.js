@@ -23,3 +23,21 @@ export const logIn = async (email, password) => {
         showAlert('error', err.response.data.message);
     }
 };
+
+export const logOut = async () => {
+    try {
+        const res = await axios({
+            method: 'GET',
+            url: 'http://127.0.0.1:3000/api/v2/student/logOut',
+        });
+        if (res.data.status === 'Success') {
+            showAlert('success', 'You have been logged out!');
+
+            setTimeout(() => {
+                window.location.href = './logIn';
+            }, 3000);
+        }
+    } catch (err) {
+        showAlert('error', err.response.data.message);
+    }
+};

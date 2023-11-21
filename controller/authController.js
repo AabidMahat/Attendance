@@ -8,6 +8,7 @@ const errorController = require('./errorController');
 const { decode } = require('punycode');
 
 const Email = require('../utils/email');
+const Student = require('../model/studentModel');
 const signToken = (id) => {
     return jwt.sign({ id: id }, process.env.JWT_SECERT, {
         expiresIn: process.env.JWT_EXPIRES_IN,
@@ -152,6 +153,9 @@ exports.protect = catchAsync(async (req, res, next) => {
         token = req.cookies.jwt;
     }
     if (!token) {
+        // res.status(401).render('error', {
+        //     msg: 'You are not logged In 😡😡',
+        // });
         return next(new AppError('You are not logged In 😡😡', 401));
     }
 
@@ -189,33 +193,50 @@ exports.isLogin = async (req, res, next) => {
     if (req.cookies.jwt) {
         token = req.cookies.jwt;
     }
+    // if (!token) {
+    //     return next(new AppError('Ur not logged In 😡😡😡', 401));
+    // }
+
     if (!token) {
-        return next(new AppError('Ur not logged In 😡😡😡', 401));
+        res.status(401).render('error', {
+            msg: 'Ur not logged In 😡😡',
+        });
+        return;
     }
 
-    //Creating a decoded Id
-    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECERT);
-
-    console.log(decoded);
-
-    const currentStudent = await studentModel.findById(decoded.id);
-
-    if (!currentStudent) {
-        return next(new AppError('User no longer exists 😥😥', 401));
-    }
-
-    if (currentStudent.changedPasswordAfter(decoded.iat)) {
-        return next(
-            new AppError(
-                'U have changed the password !! Please logIn again 😄😄',
-                401
-            )
+    try {
+        //Creating a decoded Id
+        const decoded = await promisify(jwt.verify)(
+            token,
+            process.env.JWT_SECERT
         );
-    }
 
-    req.student = currentStudent;
-    res.locals.student = currentStudent;
-    next();
+        console.log(decoded);
+
+        const currentStudent = await studentModel.findById(decoded.id);
+
+        if (!currentStudent) {
+            return next(new AppError('User no longer exists 😥😥', 401));
+        }
+
+        if (currentStudent.changedPasswordAfter(decoded.iat)) {
+            return next(
+                new AppError(
+                    'U have changed the password !! Please logIn again 😄😄',
+                    401
+                )
+            );
+        }
+
+        req.student = currentStudent;
+        res.locals.student = currentStudent;
+        next();
+    } catch (err) {
+        res.status(401).render('error', {
+            msg: 'Ur not logged In 😡😡',
+        });
+        return;
+    }
 };
 // Check if the token exists in cookies
 
@@ -290,3 +311,52 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     // const token = signToken(student._id);
     createSendToken(student, 200, res);
 });
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+    //1) Get the user from collection
+    console.log(req.student._id);
+    const currentStudent = await Student.findById({
+        _id: req.student._id,
+    }).select('+password');
+
+    if (!currentStudent)
+        return next(new AppError('Ur not logged in Please login 😕😕', 404));
+
+    const enteredPassword = req.body.currentPassword;
+
+    console.log(enteredPassword);
+
+    if (
+        !(await currentStudent.correctPassword(
+            enteredPassword,
+            currentStudent.password
+        ))
+    ) {
+        return next(
+            new AppError('User not found . Please check ur password 😒😒', 401)
+        );
+    }
+
+    // update the password
+
+    currentStudent.password = req.body.password;
+    currentStudent.confirmPassword = req.body.confirmPassword;
+
+    await currentStudent.save();
+
+    // login the user send the jwt token
+
+    createSendToken(currentStudent, 200, res);
+});
+
+//Log Out Student
+
+exports.logOut = (req, res) => {
+    res.cookie('jwt', 'loggedOut', {
+        expires: new Date(Date.now() + 10 * 1000), //Delete cookie after 10s
+        httpOnly: true,
+    });
+    res.status(200).json({
+        status: 'Success',
+    });
+};

@@ -1100,6 +1100,7 @@ body {
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
+    position: relative;
 }
 .card__header {
     position: relative;
@@ -1354,4 +1355,15 @@ body {
 }
 a {
     text-decoration: none;
+}
+
+.delete {
+    position: absolute;
+    z-index: 999;
+    top: 0px;
+    right: 0px;
+}
+.delete > .deleteGif {
+    height: 40px;
+    width: 40px;
 }

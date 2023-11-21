@@ -12,6 +12,7 @@ const userDataSchema = new mongoose.Schema(
         },
         Image: {
             type: String,
+            default: 'default.avif',
         },
         totalNumLecture: {
             type: Number,
@@ -82,6 +83,25 @@ userDataSchema.pre('save', function (next) {
     }
 
     next();
+});
+
+//Adding Image to database
+userDataSchema.pre('save', function () {
+    if (this.subject === 'Java') {
+        this.Image = 'java.png';
+    }
+    if (this.subject === 'Machine Learning') {
+        this.Image = 'machine.png';
+    }
+    if (this.subject === 'Database Engineering') {
+        this.Image = 'database.png';
+    }
+    if (this.subject === 'MIR') {
+        this.Image = 'MIR.png';
+    }
+    if (this.subject === 'Operating System') {
+        this.Image = 'Os.png';
+    }
 });
 
 //modelling the subject

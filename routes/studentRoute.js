@@ -7,6 +7,7 @@ const router = express.Router();
 router.route('/signUp').post(authController.sighUp);
 router.route('/verify/:verifyToken').get(authController.verifyEmail);
 router.route('/logIn').post(authController.logIn);
+router.get('/logOut', authController.logOut);
 
 router.route('/forgetPassword').post(authController.forgetPassword);
 router.route('/resetPassword/:token').patch(authController.resetPassword);
@@ -20,4 +21,7 @@ router
         studentController.updateMe
     );
 
+router
+    .route('/updatePassword')
+    .patch(authController.isLogin, authController.updatePassword);
 module.exports = router;

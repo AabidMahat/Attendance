@@ -1,0 +1,420 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Student Attendance System
+        meta(name="description")
+        meta(name="keywords")
+
+        // Favicons
+        link(rel="icon", href="/Project/assets/img/favicon.png")
+        link(rel="apple-touch-icon", href="/Project/assets/img/apple-touch-icon.png")
+
+        // Google Fonts
+        link(href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700|Raleway:300,400,400i,500,500i,700,800,900", rel="stylesheet")
+
+        // Vendor CSS Files
+        link(rel="stylesheet", href="/Project/assets/vendor/animate.css/animate.min.css")
+        link(rel="stylesheet", href="/Project/assets/vendor/bootstrap/css/bootstrap.min.css")
+        link(rel="stylesheet", href="/Project/assets/vendor/bootstrap-icons/bootstrap-icons.css")
+        link(rel="stylesheet", href="/Project/assets/vendor/boxicons/css/boxicons.min.css")
+        link(rel="stylesheet", href="/Project/assets/vendor/glightbox/css/glightbox.min.css")
+        link(rel="stylesheet", href="/Project/assets/vendor/swiper/swiper-bundle.min.css")
+
+        // Template Main CSS File
+        link(rel="stylesheet", href="/Project/assets/css/style.css")
+
+        script( defer src="/Project/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")
+        script( defer src="/Project/assets/vendor/glightbox/js/glightbox.min.js")
+        script( defer src="/Project/assets/vendor/isotope-layout/isotope.pkgd.min.js")
+        script( defer src="/Project/assets/vendor/swiper/swiper-bundle.min.js")
+        script( defer src="/Project/assets/vendor/php-email-form/validate.js")
+
+        script( defer src="/Project/assets/js/main.js")
+
+    body
+
+        // Header
+        header#header.fixed-top.d-flex.align-items-center
+            .container.d-flex.justify-content-between
+                .logo
+                    h1
+                        a(href="index.html") AA
+
+                nav#navbar.navbar
+                    ul
+                        li
+                            a.nav-link.scrollto.active(href="index.html") Home
+                        li
+                            a.nav-link.scrollto(href="#about") About
+                        li
+                            a.nav-link.scrollto(href="/logIn") Login
+                        li
+                            a.nav-link.scrollto(href="/signUp") Sign Up
+                        li
+                            a.nav-link.scrollto(href="#") Attendance
+                        li
+                            a.nav-link.scrollto(href="#") Profile
+
+                    i.bi.bi-list.mobile-nav-toggle
+
+        // Hero Section
+        section#hero
+            .hero-container
+                #heroCarousel.carousel.slide.carousel-fade(data-bs-ride="carousel", data-bs-interval="5000")
+                    ol#hero-carousel-indicators.carousel-indicators
+                    .carousel-inner(role="listbox")
+                        .carousel-item.active(style="background-image: url(/Project/assets/img/hero-carousel/1.jpg)")
+                            .carousel-container
+                                .container
+                                    h2.animate__animated.animate__fadeInDown Welcome to Students Attendance System
+                                    p.animate__animated.animate__fadeInUp Your gateway to hassle-free attendance tracking
+                                    a.btn-get-started.scrollto.animate__animated.animate__fadeInUp(href="#about") Get Started
+
+        // Main Section
+        main#main
+
+            // About Section
+            #about.about-area.area-padding
+                .container
+                    .row
+                        .col-md-12.col-sm-12.col-xs-12
+                            .section-headline.text-center
+                                h2 About Us
+
+                    .row
+                        // Left Column
+                        .col-md-6.col-sm-6.col-xs-12
+                            .well-left
+                                .single-well
+                                    a(href="#")
+                                        img(src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUhVY-enonFJWqMMUqQckQ6kQgjzphNmObfg&usqp=CAU", alt="image", width="500", height="600")
+
+                        // Right Column
+                        .col-md-6.col-sm-6.col-xs-12
+                            .well-middle
+                                .single-well
+                                    a(href="#")
+                                        h4.sec-head
+
+                                    p
+                                        | we believe that education is the cornerstone of a brighter future. We are dedicated to supporting educational institutions and enhancing the learning experience by providing efficient and user-friendly solutions. Our Student Attendance System is a testament to this commitment.
+
+                                    br
+                                    br
+                                    h4 Our Mission
+                                    p
+                                        | Our mission is to simplify the attendance tracking process for schools, colleges, and universities. We aim to empower educators, students, and administrators by offering a comprehensive, digital attendance management solution. By streamlining attendance monitoring, we free up valuable time for educators, enabling them to focus on what truly matters – teaching.
+
+
+            // Services Section
+            #services.services-area.area-padding
+                .container
+                    .row
+                        .col-md-12.col-sm-12.col-xs-12
+                            .section-headline.services-head.text-center
+                                h2 Our Services
+
+                    .row.text-center
+                        // Real-time Attendance Tracking
+                        .col-md-4.col-sm-4.col-xs-12
+                            .about-move
+                                .services-details
+                                    .single-services
+                                        h4 Real-time Attendance Tracking
+                                        p
+                                            | The system allows Studentss to mark attendance in real-time, eliminating the need for manual record-keeping.
+
+                        // Automated Notifications
+                        .col-md-4.col-sm-4.col-xs-12
+                            .about-move
+                                .services-details
+                                    .single-services
+                                        h4 Automated Notifications
+                                        p
+                                            | The system can send automatic notifications to students when a student is having less than 75% attendance, helping to ensure timely follow-up and support.
+
+                        // Access Control
+                        .col-md-4.col-sm-4.col-xs-12
+                            .about-move
+                                .services-details
+                                    .single-services
+                                        h4 Access Control
+                                        p
+                                            | In addition to attendance tracking, some systems offer access control features, allowing or restricting entry to specific areas based on a user status.
+
+                        // Prediction of Future Attendense
+                        .col-md-4.col-sm-4.col-xs-12
+                            .about-move
+                                .services-details
+                                    .single-services
+                                        h4 Prediction of Future Attendense
+                                        p
+                                            | System will be able to predict student's future attendance based on previous status of attendance.
+
+                        // Interactive Interface
+                        .col-md-4.col-sm-4.col-xs-12
+                            .about-move
+                                .services-details
+                                    .single-services
+                                        h4 Interactive Interface
+                                        p
+                                            | System provides user friendly interface and easy navigation
+
+                        // Accurate Attendance Records
+                        .col-md-4.col-sm-4.col-xs-12
+                            .about-move
+                                .services-details
+                                    .single-services
+                                        h4 Accurate Attendance Records
+                                        p
+                                            | Neately compile 100 percent accurate  attendense records
+
+            // Team Section
+            #team.our-team-area.area-padding
+                .container
+                    .row
+                        .col-md-12.col-sm-12.col-xs-12
+                            .section-headline.text-center
+                                h2 Our special Team
+
+                    .row
+                        // Team Member 1
+                        .col-md-3.col-sm-3.col-xs-12
+                            .single-team-member
+                                .team-img
+                                    a(href="#")
+                                        img(src="/Project/assets/img/team/1.jpg", alt="")
+                                    .team-social-icon.text-center
+                                        ul
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-facebook
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-twitter
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-instagram
+
+                                .team-content.text-center
+                                    h4 Jhon Mickel
+                                    p Seo
+
+                        // Team Member 2
+                        .col-md-3.col-sm-3.col-xs-12
+                            .single-team-member
+                                .team-img
+                                    a(href="#")
+                                        img(src="/Project/assets/img/team/2.jpg", alt="")
+                                    .team-social-icon.text-center
+                                        ul
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-facebook
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-twitter
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-instagram
+
+                                .team-content.text-center
+                                    h4 Andrew Arnold
+                                    p Web Developer
+
+                        // Team Member 3
+                        .col-md-3.col-sm-3.col-xs-12
+                            .single-team-member
+                                .team-img
+                                    a(href="#")
+                                        img(src="/Project/assets/img/team/3.jpg", alt="")
+                                    .team-social-icon.text-center
+                                        ul
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-facebook
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-twitter
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-instagram
+
+                                .team-content.text-center
+                                    h4 Lellien Linda
+                                    p Web Design
+
+                        // Team Member 4
+                        .col-md-3.col-sm-3.col-xs-12
+                            .single-team-member
+                                .team-img
+                                    a(href="#")
+                                        img(src="/Project/assets/img/team/4.jpg", alt="")
+                                    .team-social-icon.text-center
+                                        ul
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-facebook
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-twitter
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-instagram
+
+                                .team-content.text-center
+                                    h4 Jhon Powel
+                                    p Seo Expert
+
+            // Suscribe Section
+            .suscribe-area
+                .container
+                    .row
+                        .col-lg-12.col-md-12.col-sm-12.col-xs=12
+                            .suscribe-text.text-center
+                                h3 Welcome to our Students Attendance System
+                                a.sus-btn(href="#") Get A quote
+
+            // Contact Section
+            #contact.contact-area
+                .contact-inner.area-padding
+                    .contact-overly
+                    .container
+                        .row
+                            .col-md-12.col-sm-12.col-xs-12
+                                .section-headline.text-center
+                                    h2 Contact us
+
+                        .row
+                            // Contact Information
+                            .col-md-4
+                                .contact-icon.text-center
+                                    .single-icon
+                                        i.bi.bi-phone
+                                        p
+                                            | Call: +1 5589 55488 55
+                                            br
+                                            span Monday-Friday (9am-5pm)
+
+                            .col-md-4
+                                .contact-icon.text-center
+                                    .single-icon
+                                        i.bi.bi-envelope
+                                        p
+                                            | Email: info@example.com
+                                            br
+                                            span Web: www.example.com
+
+                            .col-md-4
+                                .contact-icon.text-center
+                                    .single-icon
+                                        i.bi.bi-geo-alt
+                                        p
+                                            | Location: A108 Adam Street
+                                            br
+                                            span NY 535022, USA
+
+                        .row
+
+                            // Google Map
+                            .col-md-6
+                                // Map
+                                iframe(src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22864.11283411948!2d-73.96468908098944!3d40.630720240038435!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew+York%2C+NY%2C+USA!5e0!3m2!1sen!2sbg!4v1540447494452", width="100%", height="380", frameborder="0", style="border:0", allowfullscreen)
+
+                            // Contact Form
+                            .col-md-6
+                                .form.contact-form
+                                    form(action="forms/contact.php", method="post", role="form", class="php-email-form")
+                                        .form-group
+                                            input(type="text", name="name", class="form-control", id="name", placeholder="Your Name", required)
+
+                                        .form-group.mt-3
+                                            input(type="email", class="form-control", name="email", id="email", placeholder="Your Email", required)
+
+                                        .form-group.mt-3
+                                            input(type="text", class="form-control", name="subject", id="subject", placeholder="Subject", required)
+
+                                        .form-group.mt-3
+                                            textarea.form-control(name="message", rows="5", placeholder="Message", required)
+
+                                        .div.my-3
+                                            .loading Loading
+                                            .error-message
+                                            .sent-message Your message has been sent. Thank you!
+
+                                        .div.text-center
+                                            button(type="submit") Send Message
+
+        footer
+            .footer-area
+                .container
+                    .row
+                        .col-md-4
+                            .footer-content
+                                .footer-head
+                                    .footer-logo
+                                        h2
+                                            span e
+                                            | Business
+
+                                    p
+                                        | Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis.
+
+                                    .footer-icons
+                                        ul
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-facebook
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-twitter
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-instagram
+                                            li
+                                                a(href="#")
+                                                    i.bi.bi-linkedin
+
+                        .container
+            .footer-area
+                .row
+                    .col-md-4#information
+                        .footer-content
+                            .footer-head
+                                h4 information
+                                p
+                                    | Lorem ipsum dolor sit amet, consectetur
+                                    | adipiscing elit, sed do eiusmod tempor.
+                            .footer-contacts
+                                p
+                                    span Tel:
+                                    |  +123 456 789
+                                p
+                                    span Email:
+                                    | contact@example.com
+                                p
+                                    span Working Hours:
+                                    | 9am-5pm
+
+
+                .footer-area-bottom
+                    .container
+                        .row
+                            .col-md-12.col-sm-12.col-xs-12
+                                .copyright.text-center
+                                    p
+                                        | &copy; Copyright
+                                        strong AA
+                                        | . All Rights Reserved
+                                .credits
+
+                                    | Designed by |
+                                    a(href="https://bootstrapmade.com/") Team 1
+
+
+            
+// Additional elements like preloader, back-to-top button, and script tags are omitted for brevity.
+
+

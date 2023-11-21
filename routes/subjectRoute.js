@@ -22,6 +22,10 @@ router
     .patch(authController.protect, subjectController.updateSubjectDetails);
 
 router
+    .route('/updateAttendance/:subjectId/:date')
+    .patch(authController.protect, subjectController.updateAttendanceRecords);
+
+router
     .route('/deleteSubject/:subjectId')
     .delete(authController.protect, subjectController.deleteSubject);
 

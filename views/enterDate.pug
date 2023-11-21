@@ -1,0 +1,45 @@
+doctype html
+html(lang="en")
+    head
+        title Date
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+        script( defer src='/js/bundle.js')
+        link(rel="icon", type="image/png", href="addSubject/images/icons/favicon.ico")
+        link(rel="stylesheet", type="text/css", href="addSubject/vendor/bootstrap/css/bootstrap.min.css")
+        link(rel="stylesheet", type="text/css", href="addSubject/fonts/font-awesome-4.7.0/css/font-awesome.min.css")
+        link(rel="stylesheet", type="text/css", href="addSubject/vendor/animate/animate.css")
+        link(rel="stylesheet", type="text/css", href="addSubject/vendor/css-hamburgers/hamburgers.min.css")
+        link(rel="stylesheet", type="text/css", href="addSubject/vendor/select2/select2.min.css")
+        link(rel="stylesheet", type="text/css", href="addSubject/css/util.css")
+        link(rel="stylesheet", type="text/css", href="addSubject/css/main.css")
+        link(rel="stylesheet", href="/css/pageStyle.css")
+    body
+        .limiter
+            .container-login100
+                .wrap-login100
+                    .login100-pic.js-tilt(data-tilt="")
+                        img(src="addSubject/images/img-01.png", alt="IMG")
+                    form#date_form.login100-form.validate-form
+                        span.login100-form-title Enter Date
+                        
+                        .wrap-input100.validate-input(data-validate="Total lectures is required")
+                            input#email.input100(type="date", name="date", placeholder="dd-mm-yyyy")
+                            span.focus-input100
+                            span.symbol-input100
+                                i.fa.fa-lock(aria-hidden="true")
+                        .container-login100-form-btn
+                            button.login100-form-btn Submit
+
+
+
+    script(src="addSubject/vendor/jquery/jquery-3.2.1.min.js")
+    //- script(src="addSubject/vendor/bootstrap/js/popper.js")
+    //- script(src="addSubject/vendor/bootstrap/js/bootstrap.min.js")
+    script(src="addSubject/vendor/select2/select2.min.js")
+    script(src="addSubject/vendor/tilt/tilt.jquery.min.js").
+        | $('.js-tilt').tilt({
+        |   scale: 1.1
+        | })
+    script(src="addSubject/js/main.js")
+    script(src="/js/date.js") 
